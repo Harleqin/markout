@@ -12,6 +12,7 @@
   :depends-on (#:alexandria)
   :serial t
   :components ((:file "package")
+               (:file "escape")
                (:file "markout"))
   :in-order-to ((test-op (test-op #:markout-test))))
 
