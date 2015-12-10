@@ -9,6 +9,7 @@
   :description "A tree based HTML markup output system"
   :author "Svante von Erichsen <svante.v.erichsen@web.de>"
   :license "CC0"
+  :depends-on (#:alexandria)
   :serial t
   :components ((:file "package")
                (:file "markout"))

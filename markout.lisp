@@ -5,9 +5,9 @@
 and strings.  When a list starts with a keyword, it is treated as a tagname.
 Any further keyword/value pairs in that list are treated as attributes for the
 tag.  After that, only strings and sublists are allowed.  Strings are output as
-they are.  Sublists are treated recursively.  Lists that start with a string are
-flattened into the surrounding level.  This includes the toplevel, so that you
-can represent an HTML page as a two-element list of the doctype declaration and
+they are.  Sublists are treated recursively.  Lists that do not start with a
+keyword are flattened into the surrounding level.  This includes the toplevel,
+so that you can represent an HTML page as a list of the doctype declaration and
 the html tree.
 
   Example:
@@ -30,8 +30,6 @@ the html tree.
 (defun markout-node (tree stream)
   (let ((head (first tree)))
     (ctypecase head
-      (null (values))
-      (string (markout-list tree stream))
       (keyword (let ((tag (string-downcase (symbol-name head))))
                  (princ #\< stream)
                  (princ tag stream)
@@ -39,7 +37,8 @@ the html tree.
                  (princ "</" stream)
                  (princ tag stream)
                  (princ #\> stream)
-                 (values))))))
+                 (values)))
+      ((or string list) (markout-list tree stream)))))
 
 (defun markout-attributes (tree stream)
   (loop :for list := tree :then (cddr list)
